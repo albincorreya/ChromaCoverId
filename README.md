@@ -5,6 +5,9 @@ Set of functions and methods to compute various chroma and audio similarity meas
 
 ## Dependencies
 
-```
-pip install -r requirements.txt
-```
+[TO DO SOON] : Add docker file with all the dependencies
+
+* Numpy
+* Essentia
+* Librosa
+* dzr_audio (to be removed with standard local file audio loader)
