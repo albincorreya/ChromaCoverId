@@ -153,15 +153,20 @@ class RecurrentPlots():
 
     def qmaxMeasure(self, crp, gammaO=0.5, gammaE=0.5):
         """
-        The function is implemented in the matlab way for clearing the idea
+        Computes distance cover song similarity measure from the cross recurrent plots as mentioned in [1]
+        [NOTE] The function is implemented in the matlab way for clearing the idea
+        
         Inputs :
                 crp : 2-d binary matrix of cross recurrent plot
         Params :
                 gammaO : penalty for a disurption onset
                 gammaE : penalty for a disurption extension
         Output : qmax similarity measure from a crp matrix
+        
+        [1]. Serra, J., Serra, X., & Andrzejak, R. G. (2009). Cross recurrence quantification for cover
+            song identification. New Journal of Physics, 11.    
+       
         """
-        print "\n====Qmax distance measure for cover song identification===="
 
         print "\ncrp with shape :", crp.shape
 
@@ -194,6 +199,8 @@ class RecurrentPlots():
 
     def dmaxMeasure(self, crp, gammaO=0.5, gammaE=0.5):
         """
+        Computes distance cover song similarity measure from the cross recurrent plots as mentioned in [1]
+        
         The function is implemented in the matlab way for clearing the idea
         Inputs :
                 crp : 2-d binary matrix of cross recurrent plot
@@ -202,6 +209,9 @@ class RecurrentPlots():
                 gammaE : penalty for a disurption extension
         Output : dmax similarity measure from a crp matrix
         [TODO : to optimize and re-implement it by pythonic numpy way]
+        
+        
+        [1]. Chen, N., Li, W., & Xiao, H. (2017). Fusing similarity functions for cover song identification. Multimedia Tools and Applications, pp. 1–24. 
         """
 
         print "\n====Dmax distance measure for cover song identification===="
