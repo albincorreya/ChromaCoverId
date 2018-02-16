@@ -201,7 +201,7 @@ class ChromaFeatures:
             plt.figure(figsize=(8,6))
             plt.title('2D-Fourier transform magnitude coefficiants')
             specshow(ndim_fft_mag, cmap='jet')
-        return song_fft
+        return ndim_fft_mag
 
 
     def displayChroma(self, chroma, hop_size=1024):
