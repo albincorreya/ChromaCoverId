@@ -13,7 +13,8 @@ All dependencies except Essentia can be installed via pip
 $ pip install -r requirements.txt
 ```
 
-For installing essentia check the documentation or you can easily set it up using the official Essentia docker image.
+For installing essentia check the documentation or you can easily set it up using the official 
+(Essentia docker image)[https://github.com/MTG/essentia-docker].
 
 
 
