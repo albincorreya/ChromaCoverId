@@ -37,7 +37,7 @@ class ChromaFeatures:
     def __init__(self, audio_file, mono=True, sample_rate=44100):
 
         self.fs = sample_rate
-        self.audio_vector, self.fs = librosa.load(path=audio_file, mono=mono, sr=self.fs)
+        self.audio_vector, self.fs = librosa.load(path=audio_file, mono=mono, sr=self.fs) #can alternative libraries for filehandling ?
         print "====== Audio vector of %s loaded with shape %s and sample rate %s ===== " %(audio_file, self.audio_vector.shape, self.fs)
         return
 
