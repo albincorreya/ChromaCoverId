@@ -3,19 +3,20 @@
 """
 Some set of functions for computing audio similarity measures for the task of cover song detection
 
-CrossRecurrentPlots
-QmaxMeasure
-DmaxMeasure
+* CrossRecurrentPlots
+* QmaxMeasure
+* DmaxMeasure
 
 ------
+
 @2017
-Albin Andrew Correy
+Albin Andrew Correya
+
 """
+
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.metrics.pairwise import euclidean_distances
-
-
 
 
 def optimalTranspositionIndex(chromaA, chromaB):
@@ -187,7 +188,7 @@ class RecurrentPlots():
                                                 (cum_matrix[i-1][j-2] - self.gammaState(crp[i-1][j-2], gammaO, gammaE))]
                                               )
 
-        print "Cumulative Matrix computed with shape :", cum_matrix.shape
+        #print "Cumulative Matrix computed with shape :", cum_matrix.shape
 
         if np.max(cum_matrix)==0:
             print "*****Cum_matrix max is Zero"

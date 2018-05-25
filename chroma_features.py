@@ -1,12 +1,17 @@
 # -*- coding: utf-8 -*-
 
-'''
-Some utility functions for processing audio and computing audio features useful audio cover detection task experiments using various audio processing libraries
+"""
+Some chroma feature extraction functions for audio cover detection task experiments using various 
+audio processing libraries. The main of this wrapper is to faciliate easy prototyping and 
+experiments for research purposes.
+
+[TODO] : add more features
+
 ------
 Albin Andrew Correya
 @2017
-'''
-from dzr_audio.signals import Signal
+
+"""
 from essentia import Pool, array
 import essentia.standard as estd
 import numpy as np
@@ -14,7 +19,7 @@ import librosa
 
 
 class ChromaFeatures:
-    '''
+    """
     Class containing methods to compute various chroma features
     Methods :
                 chroma_stft   : Computes chromagram using short fourier transform
@@ -22,27 +27,24 @@ class ChromaFeatures:
                 chroma_cens   : Computes improved chromagram using CENS method as mentioned in
                 chroma_hpcp   : Computes Harmonic pitch class profiles aka HPCP (improved chromagram)
     Example use :
-                chroma = ChromaFeatures(deezer_sng_id=123456)
+                chroma = ChromaFeatures("./data/test_audio.wav")
                 #chroma cens with default parameters
                 chroma.chroma_cens()
                 #chroma stft with default parameters
                 chroma.chroma_stft()
-    '''
+    """
 
-    def __init__(self, deezer_sng_id, mono=True):
+    def __init__(self, audio_file, mono=True, sample_rate=44100):
 
-        self.signal = Signal(deezer_sng_id, mono=True)
-        self.sng_length = len(self.signal.data)
-        self.audio_vector = self.signal.data[:,0]
-        self.fs = 44100
-
-        print "Audio vector loaded with shape", self.audio_vector.shape, "and sample rate", self.fs
+        self.fs = sample_rate
+        self.audio_vector, self.fs = librosa.load(path=audio_file, mono=mono, sr=self.fs)
+        print "====== Audio vector of %s loaded with shape %s and sample rate %s ===== " %(audio_file, self.audio_vector.shape, self.fs)
         return
+
 
     def chroma_stft(self, frameSize=4096, hopSize=2048, display=False):
         """
-        Computes the chromagram using librosa
-        specifies the parameters for fft and hop_size
+        Computes the chromagram from the short-term fourier transform of the input audio signal
         """
         chroma = librosa.feature.chroma_stft(y=self.audio_vector,
                                             sr=self.fs,
@@ -56,6 +58,7 @@ class ChromaFeatures:
 
     def chroma_cqt(self, hopSize=2048, display=False):
         """
+        Computes the chromagram feature from the constant-q transform of the input audio signal
         """
         chroma = librosa.feature.chroma_cqt(y=self.audio_vector,
                                             sr=self.fs,
@@ -125,7 +128,7 @@ class ChromaFeatures:
 
         audio = array(self.audio_vector)
 
-        print audio.shape
+        #print audio.shape
 
         frameGenerator = estd.FrameGenerator(audio, frameSize=frameSize, hopSize=hopSize)
 
@@ -171,17 +174,17 @@ class ChromaFeatures:
             pool.add('tonal.hpcp',hpcp_vector)
 
         if display:
-            self.displayHPCP(pool['tonal.hpcp'])
+            self.displayChroma(np.swapaxes(pool['tonal.hpcp']), 0, 1)
 
-        return pool['tonal.hpcp']
+        return np.swapaxes(pool['tonal.hpcp'], 0, 1) #swapaxis
 
     def beatSyncChroma(self, chroma, display=False):
         """
         Computes the beat-sync chromagram
+        [TODO] : add madmom beat tracker
         """
         y_harmonic, y_percussive = librosa.effects.hpss(self.audio_vector)
         tempo, beat_frames = librosa.beat.beat_track(y=y_percussive,sr=self.fs)
-        #print ("Tempo ->",tempo)
         beat_chroma = librosa.util.sync(chroma, beat_frames, aggregate=np.median)
         if display:
             self.displayChroma(beat_chroma)
@@ -204,7 +207,7 @@ class ChromaFeatures:
         return ndim_fft_mag
 
 
-    def displayChroma(self, chroma, hop_size=1024):
+    def displayChroma(self, chroma, hop_size=1024, cmap="jet"):
         '''
         Make plots for input chroma vector using matplotlib
         '''
@@ -212,21 +215,8 @@ class ChromaFeatures:
         import matplotlib.pyplot as plt
         plt.figure(figsize=(16, 8))
         plt.subplot(2,1,1)
-        plt.title("Chroma representation of audio")
-        specshow(chroma, x_axis='time', y_axis='chroma', cmap='gray_r', hop_length=hopSize)
+        plt.title("Chroma")
+        specshow(chroma, x_axis='time', y_axis='chroma', cmap=cmap, hop_length=hop_size)
         plt.show()
         return
 
-    def displayHPCP(self, hpcp):
-        '''
-        function to display hpcp vector using matplotlib (librosa.display)
-        Params
-            hpcp : hpcp vector
-        '''
-        from librosa.display import specshow
-        import matplotlib.pyplot as plt
-        s_hpcp = np.swapaxes(hpcp,0,1) #swap the axis for specshow function
-        plt.figure(figsize=(12,6))
-        plt.title("HPCP")
-        specshow(s_hpcp,x_axis='time',y_axis='chroma',cmap='gray_r')
-        plt.show()
