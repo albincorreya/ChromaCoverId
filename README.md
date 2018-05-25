@@ -21,7 +21,7 @@ For installing essentia check the documentation or you can easily set it up usin
 
 
 ```python
-from features import ChromaFeatures
+from chroma_features import ChromaFeatures
 
 audio_path = "./test_audio.wav"
 
@@ -43,6 +43,9 @@ For more detailed examples have a look on the ipython [notebook](examples.ipynb)
 
 
 ## Contribution
+
+
+
 
 
 
