@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-Some chroma feature extraction functions for audio cover detection task experiments using various 
-audio processing libraries. The main of this wrapper is to faciliate easy prototyping and 
+Some chroma feature extraction functions for audio cover detection task experiments using various
+audio processing libraries. The main of this wrapper is to faciliate easy prototyping and
 experiments for research purposes.
 
 [TODO] : add more features
@@ -53,7 +53,7 @@ class ChromaFeatures:
                                             hop_length=hopSize,
                                             n_fft=frameSize)
         if display:
-            self.displayChroma(chroma, hopSize)
+            display_chroma(chroma, hopSize)
         return chroma
 
     def chroma_cqt(self, hopSize=2048, display=False):
@@ -64,7 +64,7 @@ class ChromaFeatures:
                                             sr=self.fs,
                                             hop_length=hopSize)
         if display:
-            self.displayChroma(chroma, hopSize)
+            display_chroma(chroma, hopSize)
         return
 
 
@@ -73,12 +73,13 @@ class ChromaFeatures:
         Computes CENS chroma vectors for the input audio signal (numpy array)
         Refer https://librosa.github.io/librosa/generated/librosa.feature.chroma_cens.html for more parameters
         '''
-        chroma_cens = librosa.feature.chroma_cens(self.audio_vector,
-                                                  self.fs,
+        chroma_cens = librosa.feature.chroma_cens(y=self.audio_vector,
+                                                  sr=self.fs,
                                                   hop_length=hopSize)
         if display:
-            self.displayChroma(chroma_cens, hopSize)
+            display_chroma(chroma_cens, hopSize)
         return chroma_cens
+        
 
     def chroma_hpcp(self,
                 frameSize=4096,
@@ -174,11 +175,11 @@ class ChromaFeatures:
             pool.add('tonal.hpcp',hpcp_vector)
 
         if display:
-            self.displayChroma(np.swapaxes(pool['tonal.hpcp']), 0, 1)
+            display_chroma(np.swapaxes(pool['tonal.hpcp']), 0, 1)
 
         return np.swapaxes(pool['tonal.hpcp'], 0, 1) #swapaxis
 
-    def beatSyncChroma(self, chroma, display=False):
+    def beat_sync_chroma(self, chroma, display=False):
         """
         Computes the beat-sync chromagram
         [TODO] : add madmom beat tracker
@@ -187,11 +188,11 @@ class ChromaFeatures:
         tempo, beat_frames = librosa.beat.beat_track(y=y_percussive,sr=self.fs)
         beat_chroma = librosa.util.sync(chroma, beat_frames, aggregate=np.median)
         if display:
-            self.displayChroma(beat_chroma)
+            display_chroma(beat_chroma)
         return beat_chroma
 
 
-    def get2DfftMagnitudes(self, feature_vector, display=False):
+    def two_dim_fft_magnitudes(self, feature_vector, display=False):
         """
         Computes 2d - fourier transform magnitude coefficiants of the input feature vector (numpy array)
         Usually fed by Constant-q transform or chroma feature vectors for cover detection tasks.
@@ -207,16 +208,16 @@ class ChromaFeatures:
         return ndim_fft_mag
 
 
-    def displayChroma(self, chroma, hop_size=1024, cmap="jet"):
-        '''
-        Make plots for input chroma vector using matplotlib
-        '''
-        from librosa.display import specshow
-        import matplotlib.pyplot as plt
-        plt.figure(figsize=(16, 8))
-        plt.subplot(2,1,1)
-        plt.title("Chroma")
-        specshow(chroma, x_axis='time', y_axis='chroma', cmap=cmap, hop_length=hop_size)
-        plt.show()
-        return
 
+def display_chroma(chroma, hop_size=1024, cmap="jet"):
+    """
+    Make plots for input chroma vector using matplotlib
+    """
+    from librosa.display import specshow
+    import matplotlib.pyplot as plt
+    plt.figure(figsize=(16, 8))
+    plt.subplot(2,1,1)
+    plt.title("Chroma")
+    specshow(chroma, x_axis='time', y_axis='chroma', cmap=cmap, hop_length=hop_size)
+    plt.show()
+    return

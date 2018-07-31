@@ -1,6 +1,12 @@
-# ChromaAudioFeatures
+# ChromaFeatures_CoverID
 
 Set of functions and methods to compute various chroma and audio similarity measures particularly for the task of cover song identification.
+
+It also includes the python implementation of cover song similarity measures as mentioned in the following papers.
+
+* Serra, J., Serra, X., & Andrzejak, R. G. (2009). Cross recurrence quantification for cover song identification. New Journal of Physics.
+
+* Chen, N., Li, W., & Xiao, H. (2017). Fusing similarity functions for cover song identification. Multimedia Tools and Applications.
 
 
 ## Dependencies
@@ -18,8 +24,9 @@ For installing essentia check the documentation or you can easily set it up usin
 
 
 
-## Example use
+## Usage examples
 
+* For feature extraction using [chroma_features.py]
 
 ```python
 from chroma_features import ChromaFeatures
@@ -39,14 +46,32 @@ chroma.chroma_cens(hopSize=1024)
 
 ```
 
+* Computing cover song similarity measures (qmax and dmax)
+
+```python
+from chroma_features import ChromaFeatures
+import similarity_measures as similarity
+
+chroma1 = ChromaFeatures('<path_to_query_audio_file>')
+chroma2 = ChromaFeatures('<path_to_reference_audio_file>')
+hpcp1 = chroma1.chroma_hpcp()
+hpcp2 = chroma2.chroma_hpcp()
+
+#similarity matrix
+sims = similarity.RecurrentPlots()
+cross_recurrent_plot = sims.cross_recurrent_plot(hpcp1, hpcp2)
+#plot
+sims.plot_crp(cross_recurrent_plot, cmap='hot')
+
+#cover song similarity distance
+qmax = sims.qmax_measure(cross_recurrent_plot)
+dmax = sims.dmax_measure(cross_recurrent_plot)
+
+```
+
 For more detailed examples have a look on the ipython [notebook](examples.ipynb)
 
 
 
 ## Contribution
-
-
-
-
-
 
