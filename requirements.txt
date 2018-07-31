@@ -3,3 +3,4 @@ numpy>=1.12.1
 pandas==0.19.2
 matplotlib>=2.0.0
 librosa>=0.5
+essentia>=2.1b5.dev416

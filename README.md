@@ -9,20 +9,13 @@ It also includes the python implementation of cover song similarity measures as 
 * Chen, N., Li, W., & Xiao, H. (2017). Fusing similarity functions for cover song identification. Multimedia Tools and Applications.
 
 
-## Dependencies
+## Setup
 
-[TO DO SOON] : Add docker file with all the dependencies
-
-All dependencies except Essentia can be installed via pip
+Install python dependencies using pip
 
 ```bash
 $ pip install -r requirements.txt
 ```
-
-For installing essentia check the documentation or you can easily set it up using the official 
-(Essentia docker image)[https://github.com/MTG/essentia-docker].
-
-
 
 ## Usage examples
 
@@ -75,3 +68,5 @@ For more detailed examples have a look on the ipython [notebook](examples.ipynb)
 
 ## Contribution
 
+
+## Acknowledgements
