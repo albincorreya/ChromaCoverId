@@ -4,13 +4,21 @@
 Some set of functions for computing audio similarity measures for the task of cover song detection
 
 * cross_recurrent_plots
-* qmax_measure
-* dmax_measure
+* qmax_measure [1]
+* dmax_measure [2]
+
+
+[1]. Serra, J., Serra, X., & Andrzejak, R. G. (2009). Cross recurrence quantification for cover song identification. New Journal of Physics.
+
+[2]. Chen, N., Li, W., & Xiao, H. (2017). Fusing similarity functions for cover song identification. Multimedia Tools and Applications.
+
 
 ------
 Albin Andrew Correya
+albin.a.correya@gmail.com
 @2017
 """
+
 from sklearn.metrics.pairwise import euclidean_distances
 import numpy as np
 
@@ -218,7 +226,7 @@ class RecurrentPlots():
         [TODO : to optimize and re-implement it by pythonic numpy way]
 
 
-        [1]. Chen, N., Li, W., & Xiao, H. (2017). Fusing similarity functions for cover song identification. Multimedia Tools and Applications, pp. 1–24.
+        [1]. Chen, N., Li, W., & Xiao, H. (2017). Fusing similarity functions for cover song identification. Multimedia Tools and Applications.
         """
 
         print "\n====Dmax distance measure for cover song identification===="

@@ -9,6 +9,7 @@ experiments for research purposes.
 
 ------
 Albin Andrew Correya
+albin.a.correya@gmail.com
 @2017
 
 """
@@ -79,7 +80,7 @@ class ChromaFeatures:
         if display:
             display_chroma(chroma_cens, hopSize)
         return chroma_cens
-        
+
 
     def chroma_hpcp(self,
                 frameSize=4096,

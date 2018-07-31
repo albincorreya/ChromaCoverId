@@ -2,7 +2,7 @@
 
 Set of functions and methods to compute various chroma and audio similarity measures particularly for the task of cover song identification.
 
-It also includes the python implementation of cover song similarity measures as mentioned in the following papers.
+It also includes the python implementation of QMAX, DMAX cover song similarity measures as mentioned in the following papers.
 
 * Serra, J., Serra, X., & Andrzejak, R. G. (2009). Cross recurrence quantification for cover song identification. New Journal of Physics.
 
