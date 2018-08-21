@@ -63,7 +63,7 @@ dmax, cost_matrix = sims.dmax_measure(cross_recurrent_plot)
 ## Contribute
 
 It would be great if we can compile all the related similarity measures from
-other papers together in this repo. Let me know if you any suggestions.
+other papers together in this repo. Let me know if you have any suggestions.
 
 * Fork the repo
 * Submit a pull request
