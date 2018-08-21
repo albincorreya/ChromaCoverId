@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 """
 Some chroma feature extraction functions for audio cover detection task experiments using various
 audio processing libraries. The main of this wrapper is to faciliate easy prototyping and
@@ -35,11 +34,14 @@ class ChromaFeatures:
                 chroma.chroma_stft()
     """
 
-    def __init__(self, audio_file, mono=True, sample_rate=44100):
-
+    def __init__(self, audio_file, mono=True, sample_rate=44100, normalize_gain=False):
+        """"""
         self.fs = sample_rate
-        self.audio_vector, self.fs = librosa.load(path=audio_file, mono=mono, sr=self.fs) #can also use alternative libraries for filehandling ?
-        print "====== Audio vector of %s loaded with shape %s and sample rate %s ===== " %(audio_file, self.audio_vector.shape, self.fs)
+        if normalize_gain:
+            self.audio_vector = estd.EasyLoader(filename=audio_file, sampleRate=self.fs, replayGain=-9)()
+        else:
+            self.audio_vector = estd.MonoLoader(filename=audio_file, sampleRate=self.fs)()
+        print "== Audio vector of %s loaded with shape %s and sample rate %s ==" % (audio_file, self.audio_vector.shape, self.fs)
         return
 
 
@@ -55,7 +57,7 @@ class ChromaFeatures:
                                             n_fft=frameSize)
         if display:
             display_chroma(chroma, hopSize)
-        return chroma
+        return np.swapaxes(chroma, 0, 1)
 
     def chroma_cqt(self, hopSize=2048, display=False):
         """
@@ -66,7 +68,7 @@ class ChromaFeatures:
                                             hop_length=hopSize)
         if display:
             display_chroma(chroma, hopSize)
-        return
+        return np.swapaxes(chroma, 0, 1)
 
 
     def chroma_cens(self, hopSize=2048, display=False):
@@ -79,7 +81,7 @@ class ChromaFeatures:
                                                   hop_length=hopSize)
         if display:
             display_chroma(chroma_cens, hopSize)
-        return chroma_cens
+        return np.swapaxes(chroma_cens, 0, 1)
 
 
     def chroma_hpcp(self,
@@ -91,7 +93,7 @@ class ChromaFeatures:
                 maxPeaks=1000,
                 whitening=True,
                 referenceFrequency=440,
-                minFrequency=100,
+                minFrequency=40,
                 maxFrequency=5000,
                 nonLinear=False,
                 numBins=12,
@@ -178,7 +180,7 @@ class ChromaFeatures:
         if display:
             display_chroma(np.swapaxes(pool['tonal.hpcp']), 0, 1)
 
-        return np.swapaxes(pool['tonal.hpcp'], 0, 1) #swapaxis
+        return pool['tonal.hpcp']
 
     def beat_sync_chroma(self, chroma, display=False):
         """
@@ -198,6 +200,7 @@ class ChromaFeatures:
         Computes 2d - fourier transform magnitude coefficiants of the input feature vector (numpy array)
         Usually fed by Constant-q transform or chroma feature vectors for cover detection tasks.
         """
+        import matplotlib.pyplot as plt
         # 2d fourier transform
         ndim_fft = np.fft.fft2(feature_vector)
         ndim_fft_mag = np.abs(np.fft.fftshift(ndim_fft))
@@ -209,7 +212,6 @@ class ChromaFeatures:
         return ndim_fft_mag
 
 
-
 def display_chroma(chroma, hop_size=1024, cmap="jet"):
     """
     Make plots for input chroma vector using matplotlib
@@ -219,6 +221,6 @@ def display_chroma(chroma, hop_size=1024, cmap="jet"):
     plt.figure(figsize=(16, 8))
     plt.subplot(2,1,1)
     plt.title("Chroma")
-    specshow(chroma, x_axis='time', y_axis='chroma', cmap=cmap, hop_length=hop_size)
+    specshow(np.swapaxes(chroma,1,0), x_axis='time', y_axis='chroma', cmap=cmap, hop_length=hop_size)
     plt.show()
     return
