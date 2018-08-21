@@ -10,7 +10,6 @@ experiments for research purposes.
 Albin Andrew Correya
 albin.a.correya@gmail.com
 @2017
-
 """
 from essentia import Pool, array
 import essentia.standard as estd

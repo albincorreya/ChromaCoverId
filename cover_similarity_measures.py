@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 
 """
-NOTE: This script is same that of similarity_measures.py. This is designed to use with Cython compiler.
-
 Some set of functions for computing audio similarity measures for the task of cover song detection
 
 * cross_recurrent_plots
@@ -10,24 +8,26 @@ Some set of functions for computing audio similarity measures for the task of co
 * dmax_measure [2]
 * chroma_binary_by_oti [3]
 
-
-[1]. Serra, J., Serra, X., & Andrzejak, R. G. (2009). Cross recurrence quantification for cover song identification. 
+[1]. Serra, J., Serra, X., & Andrzejak, R. G. (2009). Cross recurrence quantification for cover song identification.
      New Journal of Physics.
 
-[2]. Chen, N., Li, W., & Xiao, H. (2017). Fusing similarity functions for cover song identification. Multimedia 
+[2]. Chen, N., Li, W., & Xiao, H. (2017). Fusing similarity functions for cover song identification. Multimedia
      Tools and Applications.
 
-[3]. Serra, Joan, et al. "Chroma binary similarity and local alignment applied to cover song identification." 
+[3]. Serra, Joan, et al. "Chroma binary similarity and local alignment applied to cover song identification."
          IEEE Transactions on Audio, Speech, and Language Processing 16.6 (2008): 1138-1151.
+
+
+
+Thanks to Romain Hennequin
 
 ------
 Albin Andrew Correya
-albin.a.correya@gmail.com
 @2017
 """
 
 from sklearn.metrics.pairwise import euclidean_distances
-from scipy.spatial.distance import euclidean 
+from scipy.spatial.distance import euclidean
 from fastdtw import fastdtw
 import numpy as np
 
@@ -43,7 +43,7 @@ def optimal_transposition_index(chromaA, chromaB, bin_size=12):
     Computes optimal transposition index (OTI) for the chromaB to be transposed in the same key as of chromaA
     (Note : Chroma vectors are resized to the shape of smallest array shape if the shapes of chroma vectors are not same.)
     Input :
-            chromaA : 
+            chromaA :
             chromaB :
         Params:
                 bin_size: Number of bins in the chroma vector
@@ -214,7 +214,7 @@ def dmax_measure(crp, gammaO=0.5, gammaE=0.5):
     Output : dmax similarity measure from a crp matrix
     [TODO : to optimize and re-implement it by pythonic numpy way]
 
-    [1]. Chen, N., Li, W., & Xiao, H. (2017). Fusing similarity functions for cover song identification. 
+    [1]. Chen, N., Li, W., & Xiao, H. (2017). Fusing similarity functions for cover song identification.
          Multimedia Tools and Applications.
     """
 
@@ -244,7 +244,6 @@ def dmax_measure(crp, gammaO=0.5, gammaE=0.5):
     return dmax, cum_matrix
 
 
-
 def oti(input_x, input_y, n_bins=12):
     idx = list()
     for index in range(n_bins):
@@ -252,12 +251,12 @@ def oti(input_x, input_y, n_bins=12):
     return np.argmax(idx)
 
 
-
 def chroma_to_binary_by_oti(chroma_a, chroma_b, match=1, mismatch=-0.9):
     """
     [TODO]
+    [NOTE: not yet finished the implementation]
 
-    [1]. Serra, Joan, et al. "Chroma binary similarity and local alignment applied to cover song identification." 
+    [1]. Serra, Joan, et al. "Chroma binary similarity and local alignment applied to cover song identification."
          IEEE Transactions on Audio, Speech, and Language Processing 16.6 (2008).
     """
     otidx = optimal_transposition_index(chroma_a, chroma_b)
@@ -276,7 +275,7 @@ def chroma_to_binary_by_oti(chroma_a, chroma_b, match=1, mismatch=-0.9):
 
 
 def dtw(input_x, input_y, dist=euclidean):
-    """"""
+    """TODO"""
     distance, path = fastdtw(input_x, input_y, dist=dist)
     return distance
 
