@@ -2,9 +2,9 @@
 """
 
 ~
-@Albin Andrew Correya
-Music Technoogy Group
-Barcelona
+albin.a.correya@gmail.com
+2018
+
 """
 import numpy as np
 
@@ -25,6 +25,9 @@ def plot_2darray_slices(array_slices):
     import matplotlib.pyplot as plt
     fig = plt.figure(figsize=(12,8))
     for idx, slice in enumerate(array_slices):
+        plt.imshow(slice, origin='lower')
+        plt.xlabel("%sth slice of matrix" % str(idx+1))
+        plt.show()
     return
 
 def plot_sim_matrix(sim_matrix):
