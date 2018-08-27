@@ -2,11 +2,15 @@
 
 Set of functions and methods to compute various chroma and audio similarity measures particularly for the task of cover song identification.
 
-It includes the python implementation of QMAX, DMAX cover song similarity measures as mentioned in the following papers.
+
+For the moment it includes the python implementation of QMAX, DMAX cover song similarity measures as mentioned in the following papers.
 
 * Serra, J., Serra, X., & Andrzejak, R. G. (2009). Cross recurrence quantification for cover song identification. New Journal of Physics.
 
 * Chen, N., Li, W., & Xiao, H. (2017). Fusing similarity functions for cover song identification. Multimedia Tools and Applications.
+
+
+[PS: This implementation is purely for research purposes]
 
 
 ## Setup
@@ -62,7 +66,7 @@ dmax, cost_matrix = sims.dmax_measure(cross_recurrent_plot)
 
 ## Contribute
 
-It would be great if we can compile all the related similarity measures from
+It would be great if we can compile all the related cover song similarity measures from
 other papers together in this repo. Let me know if you have any suggestions.
 
 * Fork the repo
@@ -70,4 +74,4 @@ other papers together in this repo. Let me know if you have any suggestions.
 
 ## Acknowledgements
 
-Thanks to Romain Hennequin and Ning Chen
+Thanks to Romain Hennequin for helping in the implementation and Ning Chen for the matlab code for dmax measure.
