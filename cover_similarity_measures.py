@@ -19,7 +19,6 @@ Albin Andrew Correya
 """
 
 from sklearn.metrics.pairwise import euclidean_distances
-from fastdtw import fastdtw
 import numpy as np
 
 
