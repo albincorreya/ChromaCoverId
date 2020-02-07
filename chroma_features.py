@@ -40,7 +40,7 @@ class ChromaFeatures:
             self.audio_vector = estd.EasyLoader(filename=audio_file, sampleRate=self.fs, replayGain=-9)()
         else:
             self.audio_vector = estd.MonoLoader(filename=audio_file, sampleRate=self.fs)()
-        print "== Audio vector of %s loaded with shape %s and sample rate %s ==" % (audio_file, self.audio_vector.shape, self.fs)
+        print("== Audio vector of %s loaded with shape %s and sample rate %s ==" % (audio_file, self.audio_vector.shape, self.fs))
         return
 
 

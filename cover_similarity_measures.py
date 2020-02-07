@@ -20,6 +20,7 @@ Albin Andrew Correya
 
 from sklearn.metrics.pairwise import euclidean_distances
 import numpy as np
+from numba import jit
 
 
 def global_hpcp(chroma):
@@ -77,7 +78,7 @@ def to_timeseries(input_xrray, tau=1, m=9):
         timeseries.append(np.ndarray.flatten(np.array(stack)))
     return np.array(timeseries)
 
-
+@jit(nopython=True)
 def gamma_state(value, gammaO=0.5, gammaE=0.5):
     """
     This prevents negative entry in Qi,j while calculating Qmax
@@ -135,7 +136,7 @@ def cross_recurrent_plot(input_x, input_y, tau=1, m=9, kappa=0.095, transpose=Tr
     cross_recurrent_plot = x*y.T
     return cross_recurrent_plot
 
-
+@jit(nopython=True)
 def qmax_measure(crp, gammaO=0.5, gammaE=0.5):
     """
     Computes distance cover song similarity measure from the cross recurrent plots as mentioned in [1]
@@ -157,20 +158,20 @@ def qmax_measure(crp, gammaO=0.5, gammaE=0.5):
     for i in range(2,Nx):
         for j in range(2,Ny):
             if int(crp[i,j]) == 1:
-                cum_matrix[i][j] = np.max([cum_matrix[i-1][j-1], cum_matrix[i-2][j-1], cum_matrix[i-1][j-2]]) + 1
+                cum_matrix[i][j] = max([cum_matrix[i-1][j-1], cum_matrix[i-2][j-1], cum_matrix[i-1][j-2]]) + 1
             else:
-                cum_matrix[i][j] = np.max([0,
+                cum_matrix[i][j] = max([0,
                                             (cum_matrix[i-1][j-1] - gamma_state(crp[i-1][j-1], gammaO, gammaE)),
                                             (cum_matrix[i-2][j-1] - gamma_state(crp[i-2][j-1], gammaO, gammaE)),
                                             (cum_matrix[i-1][j-2] - gamma_state(crp[i-1][j-2], gammaO, gammaE))]
                                             )
     #print "Cumulative Matrix computed with shape :", cum_matrix.shape
     if np.max(cum_matrix)==0:
-        print "*Cum_matrix max is Zero"
+        print("*Cum_matrix max is Zero")
     qmax = np.divide(np.sqrt(Ny), np.max(cum_matrix))
     return qmax, cum_matrix
 
-
+@jit(nopython=True)
 def dmax_measure(crp, gammaO=0.5, gammaE=0.5):
     """
     Computes distance cover song similarity measure from the cross recurrent plots as mentioned in [1]
@@ -193,13 +194,13 @@ def dmax_measure(crp, gammaO=0.5, gammaE=0.5):
     for i in range(3,Nx):
         for j in range(3,Ny):
             if int(crp[i,j]) == 1:
-                cum_matrix[i][j] = np.max([cum_matrix[i-1][j-1],
+                cum_matrix[i][j] = max([cum_matrix[i-1][j-1],
                                             cum_matrix[i-2][j-1] + crp[i-1][j],
                                             cum_matrix[i-1][j-2] + crp[i][j-1],
                                             cum_matrix[i-3][j-1] + crp[i-2][j] + crp[i-1][j],
                                             cum_matrix[i-1][j-3] + crp[i][j-2], crp[i][j-1]]) + 1
             else:
-                cum_matrix[i][j] = np.max([0,
+                cum_matrix[i][j] = max([0,
                                             (cum_matrix[i-1][j-1] - gamma_state(crp[i-1][j-1], gammaO, gammaE)),
                                             ((cum_matrix[i-2][j-1] + crp[i-1][j]) - gamma_state(crp[i-2][j-1], gammaO, gammaE)),
                                             ((cum_matrix[i-1][j-2] + crp[i][j-1]) - gamma_state(crp[i-1][j-2], gammaO, gammaE)),
